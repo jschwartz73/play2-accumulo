@@ -2,11 +2,12 @@ package com.schwartech.accumulo;
 
 import com.schwartech.accumulo.operations.TableOperationsHelper;
 import com.schwartech.accumulo.operations.UserOperationsHelper;
-import org.apache.accumulo.core.client.AccumuloException;
-import org.apache.accumulo.core.client.AccumuloSecurityException;
-import org.apache.accumulo.core.client.Connector;
+import org.apache.accumulo.core.client.*;
+import org.apache.accumulo.core.security.Authorizations;
 import play.Application;
 import play.Play;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by jeff on 3/24/14.
@@ -44,4 +45,25 @@ public class Accumulo {
         AccumuloPlugin accumuloPlugin = getPlugin();
         return accumuloPlugin.tableOperationsHelper;
     }
+
+    public static BatchWriter createBatchWriter(String table) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
+        AccumuloPlugin accumuloPlugin = getPlugin();
+        return accumuloPlugin.createBatchWriter(table);
+    }
+
+    public BatchScanner createBatchScanner(String table, Authorizations auths) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
+        AccumuloPlugin accumuloPlugin = getPlugin();
+        return accumuloPlugin.createBatchScanner(table, auths);
+    }
+
+    public BatchScanner createBatchScanner(String table, Authorizations auths, int numThreads) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
+        AccumuloPlugin accumuloPlugin = getPlugin();
+        return accumuloPlugin.createBatchScanner(table, auths, numThreads);
+    }
+
+    public Scanner createScanner(String table, Authorizations auths) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
+        AccumuloPlugin accumuloPlugin = getPlugin();
+        return accumuloPlugin.createScanner(table, auths);
+    }
+
 }

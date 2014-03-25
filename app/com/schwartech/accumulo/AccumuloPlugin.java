@@ -4,10 +4,13 @@ import com.schwartech.accumulo.operations.*;
 import org.apache.accumulo.core.client.*;
 import org.apache.accumulo.core.client.mock.MockInstance;
 import org.apache.accumulo.core.client.security.tokens.PasswordToken;
+import org.apache.accumulo.core.security.Authorizations;
 import play.Application;
 import play.Configuration;
 import play.Logger;
 import play.Plugin;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by jeff on 3/24/14.
@@ -28,6 +31,7 @@ public class AccumuloPlugin extends Plugin {
 
     public UserOperationsHelper userOperationsHelper;
     public TableOperationsHelper tableOperationsHelper;
+    public ScannerOperationsHelper scannerOperationsHelper;
 
     private MockInstance mockInstance;
 
@@ -57,6 +61,7 @@ public class AccumuloPlugin extends Plugin {
 
             userOperationsHelper = new UserOperationsHelper(this);
             tableOperationsHelper = new TableOperationsHelper(this);
+            scannerOperationsHelper = new ScannerOperationsHelper(this);
 
             Logger.info("Accumulo settings found.  Username: " + username);
         }
@@ -88,5 +93,26 @@ public class AccumuloPlugin extends Plugin {
         }
 
         return instance;
+    }
+
+    public BatchWriter createBatchWriter(String table) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
+        BatchWriterConfig config = new BatchWriterConfig();
+        config.setTimeout(timeout, TimeUnit.MILLISECONDS);
+        config.setMaxMemory(memBuf);
+        config.setMaxWriteThreads(numThreads);
+
+        return getConnector().createBatchWriter(table, config);
+    }
+
+    public BatchScanner createBatchScanner(String table, Authorizations auths) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
+        return this.createBatchScanner(table, auths, numThreads);
+    }
+
+    public BatchScanner createBatchScanner(String table, Authorizations auths, int numThreads) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
+        return getConnector().createBatchScanner(table, auths, numThreads);
+    }
+
+    public Scanner createScanner(String table, Authorizations auths) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
+        return getConnector().createScanner(table, auths);
     }
 }
