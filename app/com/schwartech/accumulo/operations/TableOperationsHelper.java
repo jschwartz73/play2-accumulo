@@ -13,16 +13,16 @@ import java.util.SortedSet;
 /**
  * Created by jeff on 3/24/14.
  */
-public class TableOperationHelper {
+public class TableOperationsHelper {
     private AccumuloPlugin plugin;
 
-    public TableOperationHelper(AccumuloPlugin plugin) {
+    public TableOperationsHelper(AccumuloPlugin plugin) {
         this.plugin = plugin;
     }
 
     public boolean tableExists(String table) throws AccumuloSecurityException, AccumuloException {
         boolean exists = plugin.getConnector().tableOperations().exists(table);
-        Logger.debug("AccumuloHelper.tableExists: " + table + "-" + exists);
+        Logger.debug("AccumuloHelper." + table + ", exists: " + exists);
         return exists;
     }
 
@@ -55,5 +55,4 @@ public class TableOperationHelper {
         SortedSet<String> tables = plugin.getConnector().tableOperations().list();
         return tables;
     }
-
 }

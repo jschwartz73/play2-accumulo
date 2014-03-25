@@ -6,6 +6,7 @@ import org.apache.accumulo.core.client.mock.MockInstance;
 import org.apache.accumulo.core.client.security.tokens.PasswordToken;
 import play.Application;
 import play.Configuration;
+import play.Logger;
 import play.Plugin;
 
 /**
@@ -25,8 +26,8 @@ public class AccumuloPlugin extends Plugin {
     private String instanceName;
     private String zooServers;
 
-    public UserOperationHelper userOperations;
-    public TableOperationHelper tableOperations;
+    public UserOperationsHelper userOperationsHelper;
+    public TableOperationsHelper tableOperationsHelper;
 
     private MockInstance mockInstance;
 
@@ -42,6 +43,7 @@ public class AccumuloPlugin extends Plugin {
         Configuration accumuloConf = Configuration.root().getConfig("accumulo");
 
         if(accumuloConf == null) {
+            Logger.info("Accumulo settings not found.");
         } else {
             username = accumuloConf.getString("username", "default");
             password = accumuloConf.getString("password", "secret");
@@ -53,8 +55,10 @@ public class AccumuloPlugin extends Plugin {
             instanceName = accumuloConf.getString("instanceName", "instance");
             zooServers = accumuloConf.getString("zooServers", "affy-master");
 
-            userOperations = new UserOperationHelper(this);
-            tableOperations = new TableOperationHelper(this);
+            userOperationsHelper = new UserOperationsHelper(this);
+            tableOperationsHelper = new TableOperationsHelper(this);
+
+            Logger.info("Accumulo settings found.  Username: " + username);
         }
     }
 

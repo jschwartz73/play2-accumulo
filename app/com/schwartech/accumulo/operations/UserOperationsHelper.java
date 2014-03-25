@@ -13,10 +13,10 @@ import java.util.Set;
 /**
  * Created by jeff on 3/24/14.
  */
-public class UserOperationHelper {
+public class UserOperationsHelper {
     private AccumuloPlugin plugin;
 
-    public UserOperationHelper(AccumuloPlugin plugin) {
+    public UserOperationsHelper(AccumuloPlugin plugin) {
         this.plugin = plugin;
     }
 
