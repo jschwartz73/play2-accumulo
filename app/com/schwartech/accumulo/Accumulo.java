@@ -1,5 +1,6 @@
 package com.schwartech.accumulo;
 
+import com.schwartech.accumulo.operations.ScannerOperationsHelper;
 import com.schwartech.accumulo.operations.TableOperationsHelper;
 import com.schwartech.accumulo.operations.UserOperationsHelper;
 import org.apache.accumulo.core.client.*;
@@ -44,6 +45,11 @@ public class Accumulo {
     public static TableOperationsHelper getTableOperationsHelper() {
         AccumuloPlugin accumuloPlugin = getPlugin();
         return accumuloPlugin.tableOperationsHelper;
+    }
+
+    public static ScannerOperationsHelper getScannerOperationsHelper() {
+        AccumuloPlugin accumuloPlugin = getPlugin();
+        return accumuloPlugin.scannerOperationsHelper;
     }
 
     public static BatchWriter createBatchWriter(String table) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
