@@ -57,17 +57,17 @@ public class Accumulo {
         return accumuloPlugin.createBatchWriter(table);
     }
 
-    public BatchScanner createBatchScanner(String table, Authorizations auths) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
+    public static BatchScanner createBatchScanner(String table, Authorizations auths) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
         AccumuloPlugin accumuloPlugin = getPlugin();
         return accumuloPlugin.createBatchScanner(table, auths);
     }
 
-    public BatchScanner createBatchScanner(String table, Authorizations auths, int numThreads) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
+    public static BatchScanner createBatchScanner(String table, Authorizations auths, int numThreads) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
         AccumuloPlugin accumuloPlugin = getPlugin();
         return accumuloPlugin.createBatchScanner(table, auths, numThreads);
     }
 
-    public Scanner createScanner(String table, Authorizations auths) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
+    public static Scanner createScanner(String table, Authorizations auths) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
         AccumuloPlugin accumuloPlugin = getPlugin();
         return accumuloPlugin.createScanner(table, auths);
     }

@@ -31,21 +31,21 @@ public class ScannerOperationsHelper {
     public DocumentResultSet query(String table, Authorizations auths, Set<Range> ranges, Map<String, String> columnsToFetch) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
         DocumentResultSet drs = new DocumentResultSet();
 
+        BatchScanner scanner = plugin.createBatchScanner(table, auths);
+
         if (!ranges.isEmpty()) {
-            BatchScanner scanner = plugin.createBatchScanner(table, auths);
-
             scanner.setRanges(ranges);
-
-            for (Map.Entry<String, String> entry : columnsToFetch.entrySet()) {
-                scanner.fetchColumn(new Text(entry.getKey()), new Text(entry.getValue()));
-            }
-
-            for (Map.Entry<Key,Value> entry : scanner) {
-                drs.add(entry.getKey(), entry.getValue());
-            }
-
-            scanner.close();
         }
+
+        for (Map.Entry<String, String> entry : columnsToFetch.entrySet()) {
+            scanner.fetchColumn(new Text(entry.getKey()), new Text(entry.getValue()));
+        }
+
+        for (Map.Entry<Key,Value> entry : scanner) {
+            drs.add(entry.getKey(), entry.getValue());
+        }
+
+        scanner.close();
 
         return drs;
     }
@@ -53,11 +53,8 @@ public class ScannerOperationsHelper {
     public DocumentIndexResultSet queryIndex(String table, Authorizations auths, Range range, String colFamily) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
         DocumentIndexResultSet dirs = new DocumentIndexResultSet();
 
-//        ScannerOpts scanOpts = new ScannerOpts();
-
         Scanner indexScanner = plugin.createScanner(table, auths);
-//                indexScanner.setBatchSize(scanOpts.scanBatchSize);
-//        indexScanner.setRange(new Range("field_Last_Name:0", "field_Last_Name:9"));
+
         indexScanner.setRange(range);
 
         indexScanner.fetchColumnFamily(new Text(colFamily));
