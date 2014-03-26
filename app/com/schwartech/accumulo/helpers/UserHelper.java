@@ -1,7 +1,6 @@
-package com.schwartech.accumulo.operations;
+package com.schwartech.accumulo.helpers;
 
 import com.schwartech.accumulo.Accumulo;
-import com.schwartech.accumulo.AccumuloPlugin;
 import org.apache.accumulo.core.client.AccumuloException;
 import org.apache.accumulo.core.client.AccumuloSecurityException;
 import org.apache.accumulo.core.client.security.tokens.PasswordToken;
@@ -14,7 +13,7 @@ import java.util.Set;
 /**
  * Created by jeff on 3/24/14.
  */
-public class UserOperations {
+public class UserHelper {
 
     public static boolean validateUser(String username, String password) {
         boolean success = false;

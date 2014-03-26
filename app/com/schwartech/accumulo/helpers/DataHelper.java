@@ -1,26 +1,22 @@
-package com.schwartech.accumulo.operations;
+package com.schwartech.accumulo.helpers;
 
 import com.schwartech.accumulo.Accumulo;
-import com.schwartech.accumulo.AccumuloPlugin;
 import com.schwartech.accumulo.model.DocumentIndexResultSet;
 import com.schwartech.accumulo.model.DocumentResultSet;
-import org.apache.accumulo.core.cli.ScannerOpts;
 import org.apache.accumulo.core.client.*;
 import org.apache.accumulo.core.client.Scanner;
-import org.apache.accumulo.core.client.security.tokens.PasswordToken;
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Range;
 import org.apache.accumulo.core.data.Value;
 import org.apache.accumulo.core.security.Authorizations;
 import org.apache.hadoop.io.Text;
-import play.Logger;
 
 import java.util.*;
 
 /**
  * Created by jeff on 3/24/14.
  */
-public class DataOperations {
+public class DataHelper {
 
     public static DocumentResultSet query(String table, Authorizations auths, Set<Range> ranges, Map<String, String> columnsToFetch) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
         DocumentResultSet drs = new DocumentResultSet();

@@ -1,10 +1,8 @@
 package com.schwartech.accumulo;
 
-import com.schwartech.accumulo.operations.*;
 import org.apache.accumulo.core.client.*;
 import org.apache.accumulo.core.client.mock.MockInstance;
 import org.apache.accumulo.core.client.security.tokens.PasswordToken;
-import org.apache.accumulo.core.security.Authorizations;
 import play.Application;
 import play.Configuration;
 import play.Logger;

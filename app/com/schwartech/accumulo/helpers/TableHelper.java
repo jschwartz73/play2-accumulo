@@ -1,20 +1,17 @@
-package com.schwartech.accumulo.operations;
+package com.schwartech.accumulo.helpers;
 
 import com.schwartech.accumulo.Accumulo;
-import com.schwartech.accumulo.AccumuloPlugin;
 import org.apache.accumulo.core.client.AccumuloException;
 import org.apache.accumulo.core.client.AccumuloSecurityException;
 import org.apache.accumulo.core.client.TableExistsException;
 import org.apache.accumulo.core.client.TableNotFoundException;
-import org.apache.accumulo.core.client.security.tokens.PasswordToken;
-import play.Logger;
 
 import java.util.SortedSet;
 
 /**
  * Created by jeff on 3/24/14.
  */
-public class TableOperations {
+public class TableHelper {
 
     public static boolean tableExists(String table) throws AccumuloSecurityException, AccumuloException {
         return Accumulo.getConnector().tableOperations().exists(table);
