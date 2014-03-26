@@ -69,8 +69,12 @@ public class UserOperationsHelper {
         }
     }
 
+    public Authorizations getAuths(String username) throws AccumuloSecurityException, AccumuloException {
+        return plugin.getConnector().securityOperations().getUserAuthorizations(username);
+    }
+
     public Set<byte[]> getRolesAsSet(String username) throws AccumuloSecurityException, AccumuloException {
-        Authorizations auths = plugin.getConnector().securityOperations().getUserAuthorizations(username);
+        Authorizations auths = getAuths(username);
         Set<byte[]> roles = new HashSet<byte[]>();
         for (byte[] role : auths) {
             roles.add(role);
