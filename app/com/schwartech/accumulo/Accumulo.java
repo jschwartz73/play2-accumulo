@@ -1,75 +1,59 @@
 package com.schwartech.accumulo;
 
-import com.schwartech.accumulo.operations.ScannerOperationsHelper;
-import com.schwartech.accumulo.operations.TableOperationsHelper;
-import com.schwartech.accumulo.operations.UserOperationsHelper;
 import org.apache.accumulo.core.client.*;
 import org.apache.accumulo.core.security.Authorizations;
 import play.Application;
 import play.Play;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * Created by jeff on 3/24/14.
  */
 public class Accumulo {
+    //TODO: JSS - this should be a config property
+    private static int DEFAULT_THREADS = 5;
+
     private static AccumuloPlugin getPlugin() {
         Application app = Play.application();
         if(app == null) {
             throw new RuntimeException("No application running");
         }
 
-        AccumuloPlugin accumuloPlugin = app.plugin(AccumuloPlugin.class);
-        if(accumuloPlugin == null) {
+        AccumuloPlugin plugin = app.plugin(AccumuloPlugin.class);
+        if(plugin == null) {
             throw new RuntimeException("AccumuloPlugin not found");
         }
-        return accumuloPlugin;
+        return plugin;
     }
 
     public static Connector getConnector() throws AccumuloSecurityException, AccumuloException {
-        AccumuloPlugin accumuloPlugin = getPlugin();
-        return accumuloPlugin.getConnector();
+        AccumuloPlugin plugin = getPlugin();
+        return plugin.getConnector();
     }
 
-    public static Connector Connector(String username, String password) throws AccumuloSecurityException, AccumuloException {
-        AccumuloPlugin accumuloPlugin = getPlugin();
-        return accumuloPlugin.getConnector();
+    public static Connector getConnector(String username, String password) throws AccumuloSecurityException, AccumuloException {
+        AccumuloPlugin plugin = getPlugin();
+        return plugin.getConnector(username, password);
     }
 
-    public static UserOperationsHelper getUserOperationsHelper() {
-        AccumuloPlugin accumuloPlugin = getPlugin();
-        return accumuloPlugin.userOperationsHelper;
-    }
-
-    public static TableOperationsHelper getTableOperationsHelper() {
-        AccumuloPlugin accumuloPlugin = getPlugin();
-        return accumuloPlugin.tableOperationsHelper;
-    }
-
-    public static ScannerOperationsHelper getScannerOperationsHelper() {
-        AccumuloPlugin accumuloPlugin = getPlugin();
-        return accumuloPlugin.scannerOperationsHelper;
+    public static BatchDeleter createBatchDeleter(String table, Authorizations auths) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
+        AccumuloPlugin plugin = getPlugin();
+        return getConnector().createBatchDeleter(table, auths, DEFAULT_THREADS, plugin.getDefaultWriterConfig());
     }
 
     public static BatchWriter createBatchWriter(String table) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
-        AccumuloPlugin accumuloPlugin = getPlugin();
-        return accumuloPlugin.createBatchWriter(table);
+        AccumuloPlugin plugin = getPlugin();
+        return getConnector().createBatchWriter(table, plugin.getDefaultWriterConfig());
     }
 
     public static BatchScanner createBatchScanner(String table, Authorizations auths) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
-        AccumuloPlugin accumuloPlugin = getPlugin();
-        return accumuloPlugin.createBatchScanner(table, auths);
+        return getConnector().createBatchScanner(table, auths, DEFAULT_THREADS);
     }
 
     public static BatchScanner createBatchScanner(String table, Authorizations auths, int numThreads) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
-        AccumuloPlugin accumuloPlugin = getPlugin();
-        return accumuloPlugin.createBatchScanner(table, auths, numThreads);
+        return getConnector().createBatchScanner(table, auths, numThreads);
     }
 
     public static Scanner createScanner(String table, Authorizations auths) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
-        AccumuloPlugin accumuloPlugin = getPlugin();
-        return accumuloPlugin.createScanner(table, auths);
+        return getConnector().createScanner(table, auths);
     }
-
 }

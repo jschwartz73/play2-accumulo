@@ -28,10 +28,7 @@ public class AccumuloPlugin extends Plugin {
     private int numThreads;
     private String instanceName;
     private String zooServers;
-
-    public UserOperationsHelper userOperationsHelper;
-    public TableOperationsHelper tableOperationsHelper;
-    public ScannerOperationsHelper scannerOperationsHelper;
+    private BatchWriterConfig batchWriterConfig;
 
     private MockInstance mockInstance;
 
@@ -59,10 +56,10 @@ public class AccumuloPlugin extends Plugin {
             instanceName = accumuloConf.getString("instanceName", "instance");
             zooServers = accumuloConf.getString("zooServers", "affy-master");
 
-            userOperationsHelper = new UserOperationsHelper(this);
-            tableOperationsHelper = new TableOperationsHelper(this);
-            scannerOperationsHelper = new ScannerOperationsHelper(this);
-
+            batchWriterConfig = new BatchWriterConfig()
+                    .setMaxMemory(memBuf)
+                    .setMaxWriteThreads(numThreads)
+                    .setTimeout(timeout, TimeUnit.MILLISECONDS);
             Logger.info("Accumulo settings found.  Username: " + username);
         }
     }
@@ -75,10 +72,12 @@ public class AccumuloPlugin extends Plugin {
         Instance inst = getZooKeeper();
         long t1 = System.currentTimeMillis();
 
-//        return inst.getConnector(username, password);
-
         PasswordToken token = new PasswordToken(password.getBytes());
         return inst.getConnector(username, token);
+    }
+
+    public BatchWriterConfig getDefaultWriterConfig() {
+        return batchWriterConfig;
     }
 
     private Instance getZooKeeper() {
@@ -93,26 +92,5 @@ public class AccumuloPlugin extends Plugin {
         }
 
         return instance;
-    }
-
-    public BatchWriter createBatchWriter(String table) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
-        BatchWriterConfig config = new BatchWriterConfig();
-        config.setTimeout(timeout, TimeUnit.MILLISECONDS);
-        config.setMaxMemory(memBuf);
-        config.setMaxWriteThreads(numThreads);
-
-        return getConnector().createBatchWriter(table, config);
-    }
-
-    public BatchScanner createBatchScanner(String table, Authorizations auths) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
-        return this.createBatchScanner(table, auths, numThreads);
-    }
-
-    public BatchScanner createBatchScanner(String table, Authorizations auths, int numThreads) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
-        return getConnector().createBatchScanner(table, auths, numThreads);
-    }
-
-    public Scanner createScanner(String table, Authorizations auths) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
-        return getConnector().createScanner(table, auths);
     }
 }
