@@ -81,23 +81,4 @@ public class UserOperationsHelper {
         }
         return roles;
     }
-
-//    public String getRolesAsString(String username) throws AccumuloSecurityException, AccumuloException {
-//        Authorizations auths = plugin.getConnector().securityOperations().getUserAuthorizations(username);
-//        StringBuilder roles = new StringBuilder();
-//        for (byte[] auth : auths.getAuthorizations()) {
-//            roles.append(new String(auth));
-//            roles.append(", ");
-//        }
-//
-//        return trimRoles(roles);
-//    }
-//
-//    private String trimRoles(StringBuilder roles) {
-//        if (roles.lastIndexOf(",") > 0) {
-//            roles.delete(roles.lastIndexOf(","), roles.lastIndexOf(",")+1);
-//        }
-//        return roles.toString().trim();
-//    }
-
 }

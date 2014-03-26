@@ -50,14 +50,12 @@ public class ScannerOperationsHelper {
         return drs;
     }
 
-    public DocumentIndexResultSet queryIndex(String table, Authorizations auths, Range range, String colFamily) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
+    public DocumentIndexResultSet queryIndex(String table, Authorizations auths, Range range) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
         DocumentIndexResultSet dirs = new DocumentIndexResultSet();
 
         Scanner indexScanner = plugin.createScanner(table, auths);
 
         indexScanner.setRange(range);
-
-        indexScanner.fetchColumnFamily(new Text(colFamily));
 
         for (Map.Entry<Key,Value> entry : indexScanner) {
             dirs.add(entry.getKey(), entry.getValue());

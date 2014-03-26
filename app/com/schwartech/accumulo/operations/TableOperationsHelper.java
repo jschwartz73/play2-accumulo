@@ -22,7 +22,7 @@ public class TableOperationsHelper {
 
     public boolean tableExists(String table) throws AccumuloSecurityException, AccumuloException {
         boolean exists = plugin.getConnector().tableOperations().exists(table);
-        Logger.debug("AccumuloHelper." + table + ", exists: " + exists);
+        Logger.debug("Accumulo." + table + ", exists: " + exists);
         return exists;
     }
 
