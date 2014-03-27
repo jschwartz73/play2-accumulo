@@ -44,6 +44,10 @@ public class DocumentIndex {
         indexData.put(colFamKey, colQualifiers);
     }
 
+    public Set<String> getColQualifiers() {
+        return indexData.keySet();
+    }
+
     public List<String> getColQualifiers(String colFamily) {
         String key = colFamily.toString();
         if (indexData.containsKey(key)) {
@@ -51,7 +55,14 @@ public class DocumentIndex {
         } else {
             return new ArrayList<String>();
         }
+    }
 
+    public Set<Range> getColQualifiersAsRangeList() {
+        Set<Range> ranges = new HashSet<Range>();
+        for (String r : indexData.keySet()) {
+            ranges.add(new Range(new Text(r)));
+        }
+        return ranges;
     }
 
     public Set<Range> getColQualifiersAsRangeList(String colFamily) {

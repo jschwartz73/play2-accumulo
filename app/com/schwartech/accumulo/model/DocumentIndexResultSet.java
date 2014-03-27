@@ -40,6 +40,16 @@ public class DocumentIndexResultSet {
         return getByRow(new Text(key));
     }
 
+    public Set<Range> getColQualifiers() {
+        Set<Range> ranges = new HashSet<Range>();
+
+        for (Text t : rowDocuments.keySet()) {
+            ranges.addAll(rowDocuments.get(t).getColQualifiersAsRangeList());
+        }
+
+        return ranges;
+    }
+
     public Set<Range> getColQualifiers(String colFamily) {
         Set<Range> ranges = new HashSet<Range>();
 
