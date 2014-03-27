@@ -36,6 +36,10 @@ public class UserHelper {
         }
     }
 
+    public static void deleteUser(String username) throws AccumuloSecurityException, AccumuloException {
+        Accumulo.getConnector().securityOperations().dropLocalUser(username);
+    }
+
     public static Set<String> getUsernames() throws AccumuloSecurityException, AccumuloException {
         return Accumulo.getConnector().securityOperations().listLocalUsers();
     }
