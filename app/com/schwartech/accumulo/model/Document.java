@@ -6,6 +6,7 @@ import org.apache.hadoop.io.Text;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by jeff on 3/20/14.
@@ -47,6 +48,17 @@ public class Document {
             value = new Value("".getBytes());
         }
         return value;
+    }
+
+    public Set<String> getKeys() {
+        return indexData.keySet();
+    }
+
+    public String getValueAsString(String colFamilyQualifier) {
+        int idx = colFamilyQualifier.indexOf(':');
+        String fam = colFamilyQualifier.substring(0, idx);
+        String qual = colFamilyQualifier.substring(idx+1);
+        return getValueAsString(fam, qual);
     }
 
     public String getValueAsString(String colFamily, String colQualifier) {
