@@ -15,6 +15,10 @@ import java.util.Set;
  */
 public class UserHelper {
 
+    public static boolean userExists(String username) throws AccumuloSecurityException, AccumuloException {
+        return Accumulo.getConnector().securityOperations().listLocalUsers().contains(username);
+    }
+
     public static boolean validateUser(String username, String password) {
         boolean success = false;
         try {
