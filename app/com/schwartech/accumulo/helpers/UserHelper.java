@@ -33,10 +33,9 @@ public class UserHelper {
     public static void createUser(String username, String password) throws AccumuloSecurityException, AccumuloException {
         PasswordToken token = new PasswordToken(password);
 
-        if(!getUsernames().contains(username)) {
-            Logger.debug("user " + username + " dont exist");
+        if(!userExists(username)) {
             Accumulo.getConnector().securityOperations().createLocalUser(username, token);
-            Logger.debug("user " + username + " created");
+            Logger.debug("User created: " + username);
         }
     }
 
