@@ -44,6 +44,8 @@ public class Document {
 
     public Value getValue(String colFamily, String colQualifier) {
         Value value = indexData.get(getIndexKey(colFamily, colQualifier));
+
+        //TODO: JSS - this should return null as that is different than ""
         if (value == null) {
             value = new Value("".getBytes());
         }
