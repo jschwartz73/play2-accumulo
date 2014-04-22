@@ -4,7 +4,6 @@ organization := "com.schwartech"
 
 version := "1.0-SNAPSHOT"
 
-//publishTo := Some(Resolver.file("https://github.com/jschwartz73/play2-accumulo",
 publishTo := Some(Resolver.file("http://jschwartz73.github.io/play2-accumulo",
   new File("/Users/jeff/dev/myprojects/play2-accumulo.github.com")))
 
