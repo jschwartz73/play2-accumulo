@@ -3,14 +3,14 @@ package com.schwartech.accumulo;
 import org.apache.accumulo.core.client.*;
 import org.apache.accumulo.core.security.Authorizations;
 import play.Application;
+import play.Configuration;
 import play.Play;
 
 /**
  * Created by jeff on 3/24/14.
  */
 public class Accumulo {
-    //TODO: JSS - this should be a config property
-    private static int DEFAULT_THREADS = 5;
+    private static int confDefaultTheads = 10;
 
     private static AccumuloPlugin getPlugin() {
         Application app = Play.application();
@@ -22,6 +22,9 @@ public class Accumulo {
         if(plugin == null) {
             throw new RuntimeException("AccumuloPlugin not found");
         }
+
+        confDefaultTheads = Configuration.root().getConfig("accumulo").getInt("numThreads", 10);
+
         return plugin;
     }
 
@@ -37,16 +40,28 @@ public class Accumulo {
 
     public static BatchDeleter createBatchDeleter(String table, Authorizations auths) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
         AccumuloPlugin plugin = getPlugin();
-        return getConnector().createBatchDeleter(table, auths, DEFAULT_THREADS, plugin.getDefaultWriterConfig());
+        return Accumulo.createBatchDeleter(table, auths, plugin.getDefaultWriterConfig());
+    }
+
+    public static BatchDeleter createBatchDeleter(String table, Authorizations auths, BatchWriterConfig config) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
+        return Accumulo.createBatchDeleter(table, auths, confDefaultTheads, config);
+    }
+
+    public static BatchDeleter createBatchDeleter(String table, Authorizations auths, int numThreads, BatchWriterConfig config) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
+        return getConnector().createBatchDeleter(table, auths, numThreads, config);
     }
 
     public static BatchWriter createBatchWriter(String table) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
         AccumuloPlugin plugin = getPlugin();
-        return getConnector().createBatchWriter(table, plugin.getDefaultWriterConfig());
+        return Accumulo.createBatchWriter(table, plugin.getDefaultWriterConfig());
+    }
+
+    public static BatchWriter createBatchWriter(String table, BatchWriterConfig config) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
+        return getConnector().createBatchWriter(table, config);
     }
 
     public static BatchScanner createBatchScanner(String table, Authorizations auths) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
-        return getConnector().createBatchScanner(table, auths, DEFAULT_THREADS);
+        return Accumulo.createBatchScanner(table, auths, confDefaultTheads);
     }
 
     public static BatchScanner createBatchScanner(String table, Authorizations auths, int numThreads) throws AccumuloSecurityException, AccumuloException, TableNotFoundException {
