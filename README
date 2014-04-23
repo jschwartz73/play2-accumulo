@@ -1,4 +1,63 @@
-This is your new Play application
-=====================================
+Accumulo 1.5.1 / Play 2.1 Module
+======================================
 
-This file will be packaged with your application, when using `play dist`.
+This project provides a very simple plugin for Play 2.1 that allows easy access accumulo 1.5.1 database connections.  The [Apache Accumulo](http://accumulo.apache.org) sorted, distributed key/value store is a robust, scalable, high performance data storage and retrieval system.  Apache Accumulo is based on Google's BigTable design and is built on top of Apache [Hadoop](http://hadoop.apache.org), [Zookeeper](http://zookeeper.apache.org), and [Thrift](http://thrift.apache.org).
+
+Installation
+------------
+
+Add the following dependency to your ``build.sbt``:
+
+    val appDependencies = Seq(
+        "com.schwartech" %% "accumulo-plugin" % "1.0-SNAPSHOT",
+    )
+
+    resolvers += (
+        "SchwarTech GitHub Repository" at "http://jschwartz73.github.io/play2-accumulo/"
+    )
+
+Configuration
+-------------
+
+The following are the default settings available for the accumulo plugin.  Modify them to fit your environment
+
+    accumulo.instanceName=mock-accumulo  # This uses Accumulo's mock instance, which is an in-memory fake implementation used primarily for unit testing
+
+    accumulo.memBuf=1000000
+    accumulo.timeout=1000
+    accumulo.numThreads=10
+
+    accumulo.zooServers="localhost:2181"
+    accumulo.username=root
+    accumulo.password=password
+
+Usage
+-----
+
+See the sample app for an example of usage.
+
+A few notes:
+
+* This is a very early implementation.  Currently it just eases configuration and getting an accumulo connection.
+* Contributions are encouraged
+* I've started a "Document" based add-on to simplify some common queries, etc.  This will probably be a separate project
+
+Dependencies included in the plugin
+-----------------------------------
+Accumulo: 1.5.1
+Hadoop: 1.2.1
+Zookeeper 3.4.5
+
+Vagrant Accumulo Server 1.5.1
+-----------------------------
+https://github.com/jschwartz73/accumulo-devserver.git
+cd accumulo-devserver
+git checkout v1.5.1
+vagrant up
+
+Vagrant Accumulo Server 1.6.0-RC2
+-----------------------------
+https://github.com/jschwartz73/accumulo-devserver.git
+cd accumulo-devserver
+git checkout v1.6.0-RC2
+vagrant up

@@ -44,15 +44,15 @@ public class AccumuloPlugin extends Plugin {
         if(accumuloConf == null) {
             Logger.info("Accumulo settings not found.");
         } else {
-            username = accumuloConf.getString("username", "default");
+            username = accumuloConf.getString("username", "root");
             password = accumuloConf.getString("password", "secret");
 
             memBuf = accumuloConf.getLong("memBuf", 1000000L);
             timeout =accumuloConf.getLong("timeout", 1000L);
             numThreads = accumuloConf.getInt("numThreads", 10);
 
-            instanceName = accumuloConf.getString("instanceName", "instance");
-            zooServers = accumuloConf.getString("zooServers", "affy-master");
+            instanceName = accumuloConf.getString("instanceName", "mock-instance");
+            zooServers = accumuloConf.getString("zooServers", "localhost:2181");
 
             batchWriterConfig = new BatchWriterConfig()
                     .setMaxMemory(memBuf)
