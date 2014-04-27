@@ -4,8 +4,8 @@ organization := "com.schwartech"
 
 version := "1.0-SNAPSHOT"
 
-publishTo := Some(Resolver.file("http://jschwartz73.github.com/m2repo/releases/",
-  new File("/Users/jeff/dev/myprojects/jschwartz73.github.com/m2repo/releases")))
+publishTo := Some(Resolver.file("http://schwartech.github.com/m2repo/releases/",
+  new File("/Users/jeff/dev/myprojects/schwartech.github.com/m2repo/releases")))
 
 libraryDependencies ++= Seq(
   "org.apache.accumulo" % "accumulo-core" % "1.5.1",
