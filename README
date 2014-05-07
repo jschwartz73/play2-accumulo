@@ -1,7 +1,7 @@
-Accumulo 1.5.1 / Play 2.1 Module
+Accumulo 1.6.0 / Play 2.2.3 Module
 ======================================
 
-This project provides a very simple plugin for Play 2.1 that allows easy access accumulo 1.5.1 database connections.  The [Apache Accumulo](http://accumulo.apache.org) sorted, distributed key/value store is a robust, scalable, high performance data storage and retrieval system.  Apache Accumulo is based on Google's BigTable design and is built on top of Apache [Hadoop](http://hadoop.apache.org), [Zookeeper](http://zookeeper.apache.org), and [Thrift](http://thrift.apache.org).
+This project provides a very simple plugin for Play 2.2.3 that allows easy access accumulo 1.6.0 database connections.  The [Apache Accumulo](http://accumulo.apache.org) sorted, distributed key/value store is a robust, scalable, high performance data storage and retrieval system.  Apache Accumulo is based on Google's BigTable design and is built on top of Apache [Hadoop](http://hadoop.apache.org), [Zookeeper](http://zookeeper.apache.org), and [Thrift](http://thrift.apache.org).
 
 Installation
 ------------
@@ -44,20 +44,14 @@ A few notes:
 
 Dependencies included in the plugin
 -----------------------------------
-Accumulo: 1.5.1
+Accumulo: 1.6.0
 Hadoop: 1.2.1
 Zookeeper 3.4.5
 
-Vagrant Accumulo Server 1.5.1
+Vagrant Accumulo Server 1.6.0
 -----------------------------
 https://github.com/jschwartz73/accumulo-devserver.git
 cd accumulo-devserver
-git checkout v1.5.1
+git checkout v1.6.0
 vagrant up
 
-Vagrant Accumulo Server 1.6.0-RC2
------------------------------
-https://github.com/jschwartz73/accumulo-devserver.git
-cd accumulo-devserver
-git checkout v1.6.0-RC2
-vagrant up
