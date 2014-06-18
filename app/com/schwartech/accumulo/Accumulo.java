@@ -43,4 +43,9 @@ public class Accumulo {
         return plugin.getNumThreads();
     }
 
+    public static BatchWriterConfig getDefaultWriterConfig() {
+        AccumuloPlugin plugin = getPlugin();
+        return plugin.getDefaultWriterConfig();
+    }
+
 }
