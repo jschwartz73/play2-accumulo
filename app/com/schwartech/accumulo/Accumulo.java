@@ -33,7 +33,7 @@ public class Accumulo {
         return plugin.getConnector();
     }
 
-    public static void closeConnector(Connector c) throws AccumuloSecurityException, AccumuloException {
+    public static void closeConnector(Connector c) {
         AccumuloPlugin plugin = getPlugin();
         plugin.closeConnector(c);
     }

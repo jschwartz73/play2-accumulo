@@ -76,7 +76,7 @@ public class AccumuloPlugin extends Plugin {
         return connectionPool.getConnector();
     }
 
-    public void closeConnector(Connector c) throws AccumuloSecurityException, AccumuloException {
+    public void closeConnector(Connector c) {
         connectionPool.closeConnector(c);
     }
 
