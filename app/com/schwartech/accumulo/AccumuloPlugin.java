@@ -1,8 +1,11 @@
 package com.schwartech.accumulo;
 
+import com.schwartech.pool.AccumuloConnectorFactory;
+import com.schwartech.pool.AccumuloConnectorUtil;
 import org.apache.accumulo.core.client.*;
 import org.apache.accumulo.core.client.mock.MockInstance;
 import org.apache.accumulo.core.client.security.tokens.PasswordToken;
+import org.apache.commons.pool2.impl.GenericObjectPool;
 import play.Application;
 import play.Configuration;
 import play.Logger;
@@ -28,7 +31,7 @@ public class AccumuloPlugin extends Plugin {
     private String zooServers;
     private BatchWriterConfig batchWriterConfig;
 
-    private MockInstance mockInstance;
+    private AccumuloConnectorUtil connectionPool;
 
     public AccumuloPlugin(Application application) {
         this.application = application;
@@ -59,36 +62,26 @@ public class AccumuloPlugin extends Plugin {
                     .setMaxWriteThreads(numThreads)
                     .setTimeout(timeout, TimeUnit.MILLISECONDS);
             Logger.info("Accumulo settings found.  Username: " + username);
+
+            AccumuloConnectorFactory accumuloConnectorFactory = new AccumuloConnectorFactory()
+                    .username(username)
+                    .password(password)
+                    .instanceName(instanceName)
+                    .zooServers(zooServers);
+            connectionPool = new AccumuloConnectorUtil(new GenericObjectPool<Connector>(accumuloConnectorFactory));
         }
     }
 
     public Connector getConnector() throws AccumuloSecurityException, AccumuloException {
-        return getConnector(username, password);
+        return connectionPool.getConnector();
     }
 
-    public Connector getConnector(String username, String password) throws AccumuloSecurityException, AccumuloException {
-        Instance inst = getZooKeeper();
-        long t1 = System.currentTimeMillis();
-
-        PasswordToken token = new PasswordToken(password.getBytes());
-        return inst.getConnector(username, token);
+    public void closeConnector(Connector c) throws AccumuloSecurityException, AccumuloException {
+        connectionPool.closeConnector(c);
     }
 
     public BatchWriterConfig getDefaultWriterConfig() {
         return batchWriterConfig;
     }
 
-    private Instance getZooKeeper() {
-        Instance instance;
-        if (instanceName.contains("mock")) {
-            if (mockInstance == null) {
-                mockInstance = new MockInstance();
-            }
-            instance = mockInstance;
-        } else {
-            instance = new ZooKeeperInstance(instanceName, zooServers);
-        }
-
-        return instance;
-    }
 }

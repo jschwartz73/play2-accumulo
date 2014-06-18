@@ -8,27 +8,27 @@ import org.apache.commons.pool2.ObjectPool;
  * Created by jeff on 6/17/14.
  */
 public class AccumuloConnectorUtil {
-    private ObjectPool<Instance> pool;
+    private ObjectPool<Connector> pool;
 
-    public AccumuloConnectorUtil(ObjectPool<Instance> pool) {
+    public AccumuloConnectorUtil(ObjectPool<Connector> pool) {
         this.pool = pool;
     }
 
-    public Connector getConnector(String username, AuthenticationToken token) throws AccumuloSecurityException, AccumuloException {
-        Instance instance;
+    public Connector getConnector() throws AccumuloSecurityException, AccumuloException {
+        Connector connector;
         try {
-            instance = pool.borrowObject();
-            return instance.getConnector(username, token);
+            return pool.borrowObject();
         } catch (Exception e) {
-            if (e instanceof AccumuloSecurityException) throw (AccumuloSecurityException)e;
+            if (e instanceof AccumuloSecurityException) throw (AccumuloSecurityException) e;
             else throw new RuntimeException("Unable to borrow buffer from pool" + e.toString());
-        } finally {
-            try {
-                if (null != instance) {
-                    pool.returnObject(instance);
-                }
-            } catch (Exception e) {
-                // ignored
-            }
+        }
+    }
+
+    public void closeConnector(Connector connector) {
+        try {
+            pool.returnObject(connector);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to borrow buffer from pool" + e.toString());
+        }
     }
 }
