@@ -80,6 +80,10 @@ public class AccumuloPlugin extends Plugin {
         connectionPool.closeConnector(c);
     }
 
+    public int getNumThreads() {
+        return numThreads;
+    }
+
     public BatchWriterConfig getDefaultWriterConfig() {
         return batchWriterConfig;
     }
