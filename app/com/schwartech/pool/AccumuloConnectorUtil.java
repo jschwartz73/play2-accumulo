@@ -25,6 +25,9 @@ public class AccumuloConnectorUtil {
     }
 
     public void closeConnector(Connector connector) {
+        if (connector == null) {
+            return;
+        }
         try {
             pool.returnObject(connector);
         } catch (Exception e) {
