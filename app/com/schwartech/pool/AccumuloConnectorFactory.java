@@ -22,6 +22,8 @@ public class AccumuloConnectorFactory extends BasePooledObjectFactory<Connector>
     private String instanceName;
     private String zooServers;
 
+    private static Instance mockInstance = null;
+
     public AccumuloConnectorFactory() {
         this.username = "root";
         token = new PasswordToken("password");
@@ -72,7 +74,10 @@ public class AccumuloConnectorFactory extends BasePooledObjectFactory<Connector>
         Instance instance;
 
         if (instanceName.contains("mock")) {
-            instance = new MockInstance();
+            if (mockInstance == null) {
+                mockInstance = new MockInstance();
+            }
+            instance = mockInstance;
         } else {
             instance = new ZooKeeperInstance(instanceName, zooServers);
         }

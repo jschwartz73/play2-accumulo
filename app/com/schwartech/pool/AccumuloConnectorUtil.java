@@ -1,7 +1,6 @@
 package com.schwartech.pool;
 
 import org.apache.accumulo.core.client.*;
-import org.apache.accumulo.core.client.security.tokens.AuthenticationToken;
 import org.apache.commons.pool2.ObjectPool;
 
 /**
@@ -24,7 +23,7 @@ public class AccumuloConnectorUtil {
         }
     }
 
-    public void closeConnector(Connector connector) {
+    public void releaseConnector(Connector connector) {
         if (connector == null) {
             return;
         }

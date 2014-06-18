@@ -33,9 +33,9 @@ public class Accumulo {
         return plugin.getConnector();
     }
 
-    public static void closeConnector(Connector c) {
+    public static void releaseConnector(Connector c) {
         AccumuloPlugin plugin = getPlugin();
-        plugin.closeConnector(c);
+        plugin.releaseConnector(c);
     }
 
     public static int getNumThreads() {

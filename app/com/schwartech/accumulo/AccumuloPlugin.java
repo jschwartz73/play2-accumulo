@@ -76,8 +76,8 @@ public class AccumuloPlugin extends Plugin {
         return connectionPool.getConnector();
     }
 
-    public void closeConnector(Connector c) {
-        connectionPool.closeConnector(c);
+    public void releaseConnector(Connector c) {
+        connectionPool.releaseConnector(c);
     }
 
     public int getNumThreads() {
