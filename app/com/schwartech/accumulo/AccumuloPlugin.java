@@ -29,6 +29,7 @@ public class AccumuloPlugin extends Plugin {
     private int numThreads;
     private String instanceName;
     private String zooServers;
+    private Boolean enabled;
     private BatchWriterConfig batchWriterConfig;
 
     private AccumuloConnectorUtil connectionPool;
@@ -47,28 +48,42 @@ public class AccumuloPlugin extends Plugin {
         if(accumuloConf == null) {
             Logger.info("Accumulo settings not found.");
         } else {
-            username = accumuloConf.getString("username", "root");
-            password = accumuloConf.getString("password", "secret");
+            Logger.info("Accumulo settings found:");
 
-            memBuf = accumuloConf.getLong("memBuf", 1000000L);
-            timeout =accumuloConf.getLong("timeout", 1000L);
-            numThreads = accumuloConf.getInt("numThreads", 10);
+            enabled = accumuloConf.getBoolean("plugin.enabled", true);
+            Logger.info(" * plugin.enabled: " + enabled);
 
-            instanceName = accumuloConf.getString("instanceName", "mock-instance");
-            zooServers = accumuloConf.getString("zooServers", "localhost:2181");
+            if (enabled) {
+                username = accumuloConf.getString("username", "root");
+                password = accumuloConf.getString("password", "secret");
 
-            batchWriterConfig = new BatchWriterConfig()
-                    .setMaxMemory(memBuf)
-                    .setMaxWriteThreads(numThreads)
-                    .setTimeout(timeout, TimeUnit.MILLISECONDS);
-            Logger.info("Accumulo settings found.  Username: " + username);
+                memBuf = accumuloConf.getLong("memBuf", 1000000L);
+                timeout = accumuloConf.getLong("timeout", 1000L);
+                numThreads = accumuloConf.getInt("numThreads", 10);
 
-            AccumuloConnectorFactory accumuloConnectorFactory = new AccumuloConnectorFactory()
-                    .username(username)
-                    .password(password)
-                    .instanceName(instanceName)
-                    .zooServers(zooServers);
-            connectionPool = new AccumuloConnectorUtil(new GenericObjectPool<Connector>(accumuloConnectorFactory));
+                instanceName = accumuloConf.getString("instanceName", "mock-instance");
+                zooServers = accumuloConf.getString("zooServers", "localhost:2181");
+
+                batchWriterConfig = new BatchWriterConfig()
+                        .setMaxMemory(memBuf)
+                        .setMaxWriteThreads(numThreads)
+                        .setTimeout(timeout, TimeUnit.MILLISECONDS);
+                Logger.info("Accumulo settings found: ");
+                Logger.info(" * username: " + username);
+                Logger.info(" * memBuf: " + memBuf);
+                Logger.info(" * timeout: " + timeout);
+                Logger.info(" * numThreads: " + numThreads);
+                Logger.info(" * instanceName: " + instanceName);
+                Logger.info(" * zooServers: " + zooServers);
+
+                AccumuloConnectorFactory accumuloConnectorFactory = new AccumuloConnectorFactory()
+                        .username(username)
+                        .password(password)
+                        .instanceName(instanceName)
+                        .zooServers(zooServers);
+
+                connectionPool = new AccumuloConnectorUtil(new GenericObjectPool<Connector>(accumuloConnectorFactory));
+            }
         }
     }
 
