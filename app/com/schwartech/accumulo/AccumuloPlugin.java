@@ -39,6 +39,7 @@ public class AccumuloPlugin extends Plugin {
             Logger.info(" * plugin.enabled: " + enabled);
 
             if (enabled) {
+                config = new Config();
                 config.username = accumuloConf.getString("username", "root");
                 config.password = accumuloConf.getString("password", "secret");
 
@@ -57,6 +58,7 @@ public class AccumuloPlugin extends Plugin {
                 Logger.info(" * instanceName: " + config.instanceName);
                 Logger.info(" * zooServers: " + config.zooServers);
 
+                Accumulo.initialize(config);
             }
         }
     }
