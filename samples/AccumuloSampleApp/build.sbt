@@ -1,10 +1,10 @@
 name := "AccumuloSampleApp"
 
-version := "1.0-SNAPSHOT"
+version := "1.1-SNAPSHOT"
 
 libraryDependencies ++= Seq(
   cache,
-  "com.schwartech" %% "accumulo-plugin" % "1.0-SNAPSHOT"
+  "com.schwartech" %% "accumulo-plugin" % "1.1-SNAPSHOT"
 )
 
 resolvers += (
