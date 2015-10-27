@@ -61,4 +61,7 @@ public class Accumulo {
         connectionPool = new AccumuloConnectorUtil(new GenericObjectPool<Connector>(accumuloConnectorFactory));
     }
 
+    public static String getUsername() {
+        return config.username;
+    }
 }
